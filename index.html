@@ -77,10 +77,24 @@
       animation: spin 1s linear infinite;
       margin: 20px auto;
     }
-    .green-tick {
-      font-size: 60px;
-      color: green;
-      animation: pop 0.6s ease-in-out;
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      display: none;
+      backdrop-filter: blur(5px);
+    }
+    .stripe-loader {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #007bff, #00d4ff);
+      animation: bounce 0.8s infinite alternate;
     }
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -94,10 +108,25 @@
       0% { transform: scale(0); }
       100% { transform: scale(1); }
     }
+    @keyframes bounce {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.3);
+      }
+    }
+    .green-tick {
+      font-size: 60px;
+      color: green;
+      animation: pop 0.6s ease-in-out;
+    }
   </style>
 </head>
 <body>
-  <h1>Select a Gift Card</h1>
+  <div class="overlay" id="stripeOverlay">
+    <div class="stripe-loader"></div>
+  </div>  <h1>Select a Gift Card</h1>
   <div id="card-options">
     <div class="card-option" onclick="selectCard('Amazon')">
       <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
@@ -108,7 +137,7 @@
       <p>Flipkart</p>
     </div>
     <div class="card-option" onclick="selectCard('BookMyShow')">
-      <img src="https://assets.bookmyshow.com/static/packed/images/newcommon/logo.svg" alt="BookMyShow">
+      <img src="https://assets-in.bmscdn.com/static/2023/03/bms-logo-new.png" alt="BookMyShow">
       <p>BookMyShow</p>
     </div>
     <div class="card-option" onclick="selectCard('Zomato')">
@@ -160,9 +189,9 @@
 
     function processCardPayment() {
       hideAllSections();
-      showSection('loading-section');
+      showStripeAnimation();
       setTimeout(() => {
-        hideAllSections();
+        hideStripeAnimation();
         showSection('confirmation-section');
         document.getElementById('gift-code').innerText = generateCodeText();
       }, 4000);
@@ -183,6 +212,14 @@
 
     function hideAllSections() {
       document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+    }
+
+    function showStripeAnimation() {
+      document.getElementById('stripeOverlay').style.display = 'flex';
+    }
+
+    function hideStripeAnimation() {
+      document.getElementById('stripeOverlay').style.display = 'none';
     }
   </script></body>
 </html>
