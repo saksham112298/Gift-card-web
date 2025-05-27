@@ -15,6 +15,7 @@
       background: linear-gradient(to right, #ece9e6, #ffffff);
       padding: 30px;
       color: #333;
+      text-align: center;
     }
     h1, h2 {
       margin-bottom: 20px;
@@ -37,7 +38,8 @@
     }
     .card-option img {
       width: 100px;
-      height: auto;
+      height: 60px;
+      object-fit: contain;
       margin-bottom: 10px;
     }
     button {
@@ -106,7 +108,7 @@
       <p>Flipkart</p>
     </div>
     <div class="card-option" onclick="selectCard('BookMyShow')">
-      <img src="https://assets.bookmyshow.com/static/images/logo/og-bms-logo.png" alt="BookMyShow">
+      <img src="https://assets.bookmyshow.com/static/packed/images/newcommon/logo.svg" alt="BookMyShow">
       <p>BookMyShow</p>
     </div>
     <div class="card-option" onclick="selectCard('Zomato')">
@@ -128,7 +130,7 @@
     <input type="text" placeholder="Expiry Date (MM/YY)" /><br>
     <input type="password" placeholder="CVV" /><br>
     <input type="text" placeholder="Card Holder Name" /><br>
-    <button onclick="delayNext('loading-section', 3000, true)">Pay Now</button>
+    <button onclick="processCardPayment()">Pay Now</button>
   </div>  <div id="loading-section" class="section">
     <h2>Processing Payment...</h2>
     <div class="spinner"></div>
@@ -147,16 +149,23 @@
       delayNext('amount-section', 2000);
     }
 
-    function delayNext(sectionId, delay, generateCode = false) {
+    function delayNext(sectionId, delay) {
       hideAllSections();
       showSection('loading-section');
       setTimeout(() => {
         hideAllSections();
         showSection(sectionId);
-        if (sectionId === 'confirmation-section' || generateCode) {
-          document.getElementById('gift-code').innerText = generateCodeText();
-        }
       }, delay);
+    }
+
+    function processCardPayment() {
+      hideAllSections();
+      showSection('loading-section');
+      setTimeout(() => {
+        hideAllSections();
+        showSection('confirmation-section');
+        document.getElementById('gift-code').innerText = generateCodeText();
+      }, 4000);
     }
 
     function generateCodeText() {
