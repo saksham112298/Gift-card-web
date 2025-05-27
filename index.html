@@ -52,10 +52,10 @@
     button:hover {
       background-color: #0056b3;
     }
-    input[type="number"] {
+    input[type="number"], input[type="text"], input[type="password"] {
       padding: 10px;
       font-size: 16px;
-      width: 200px;
+      width: 260px;
       margin: 10px 0;
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -101,11 +101,11 @@
       <p>Amazon</p>
     </div>
     <div class="card-option" onclick="selectCard('Flipkart')">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Flipkart_Logo.png" alt="Flipkart">
+      <img src="https://1000logos.net/wp-content/uploads/2021/02/Flipkart-logo.png" alt="Flipkart">
       <p>Flipkart</p>
     </div>
     <div class="card-option" onclick="selectCard('BookMyShow')">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bookmyshow_logo.png" alt="BookMyShow">
+      <img src="https://companieslogo.com/img/orig/BMS.NS_BIG.D-e4d8d7ae.png?t=1633515133" alt="BookMyShow">
       <p>BookMyShow</p>
     </div>
     <div class="card-option" onclick="selectCard('Zomato')">
@@ -120,7 +120,14 @@
   </div>  <div id="payment-section" class="section">
     <h2>Select Payment Method</h2>
     <button onclick="pay('UPI')">Pay with UPI</button>
-    <button onclick="pay('Card')">Credit/Debit Card</button>
+    <button onclick="showCardForm()">Credit/Debit Card</button>
+  </div>  <div id="card-form" class="section">
+    <h2>Enter Card Details</h2>
+    <input type="text" placeholder="Card Number" /><br>
+    <input type="text" placeholder="Expiry Date (MM/YY)" /><br>
+    <input type="password" placeholder="CVV" /><br>
+    <input type="text" placeholder="Card Holder Name" /><br>
+    <button onclick="payWithCard()">Pay Now</button>
   </div>  <div id="loading-section" class="section">
     <h2>Processing Payment...</h2>
     <div class="spinner"></div>
@@ -150,6 +157,21 @@
     }
 
     function pay(method) {
+      hideAllSections();
+      showSection('loading-section');
+      setTimeout(() => {
+        hideAllSections();
+        showSection('confirmation-section');
+        document.getElementById('gift-code').innerText = generateCode();
+      }, 3000);
+    }
+
+    function showCardForm() {
+      hideAllSections();
+      showSection('card-form');
+    }
+
+    function payWithCard() {
       hideAllSections();
       showSection('loading-section');
       setTimeout(() => {
