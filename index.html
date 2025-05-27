@@ -192,9 +192,13 @@
       showStripeAnimation();
       setTimeout(() => {
         hideStripeAnimation();
-        showSection('confirmation-section');
-        document.getElementById('gift-code').innerText = generateCodeText();
-      }, 4000);
+        showSection('loading-section');
+        setTimeout(() => {
+          hideAllSections();
+          showSection('confirmation-section');
+          document.getElementById('gift-code').innerText = generateCodeText();
+        }, 3000);
+      }, 3000);
     }
 
     function generateCodeText() {
